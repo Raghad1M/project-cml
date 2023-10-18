@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class UserRegistrationPage extends StatefulWidget {
   @override
   _UserRegistrationPageState createState() => _UserRegistrationPageState();
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 }
 
 class _UserRegistrationPageState extends State<UserRegistrationPage> {
@@ -12,7 +15,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
   String? _email;
   String? _password;
   String? _name;
-
+ final passwordController = TextEditingController();
   
   @override
   Widget build(BuildContext context) {
@@ -69,14 +72,13 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
                 decoration: InputDecoration(labelText: 'verify password'),
                 obscureText: true,
                 validator: (value) {
-                if (value != _password) {
+                if (value != passwordController.text) {
                return 'Passwords must be the same!';
                  }
                  return null;
                       },
-
-
               ),
+
               SizedBox(height: 20),
               ElevatedButton(
                 child: Text('Register'),
@@ -86,8 +88,19 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
                 onPressed: () async {
                 if (_formKey.currentState?.validate() ?? false) {
                   _formKey.currentState?.save();
-                    try {
-                      await _auth.createUserWithEmailAndPassword(email: _email!, password: _password!);
+                   try {
+                      // Create the user
+                      UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
+                        email: _email!,
+                        password: _password!,
+                      );
+
+                      // Save additional user data in Firestore
+                      await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+                        'email': _email,
+                        'name': _name,
+                        'subscribed':false,
+                      });
                       Navigator.pop(context); // Return to previous screen after successful registration
                     } catch (error) {
                       print(error);
@@ -102,7 +115,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
               ),
               TextButton(
                 child: Text('Already have an account? Login'),
-                decoration(Color.fromARGB(255, 18, 19, 102)),
+    
                 onPressed: () {
                   // Navigate to login page
                 },
