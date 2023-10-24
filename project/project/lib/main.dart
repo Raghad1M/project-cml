@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'choose acc typpe',
+      title: 'choose acc type',
       theme: ThemeData(primaryColor: Color.fromARGB(255, 5, 5, 92)),
       home: const ChooseRolePage(),
       

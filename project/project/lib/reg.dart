@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:project/HomePage.dart';
 
 
 class UserRegistrationPage extends StatefulWidget {
   @override
   _UserRegistrationPageState createState() => _UserRegistrationPageState();
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 }
 
 class _UserRegistrationPageState extends State<UserRegistrationPage> {
   final _auth = FirebaseAuth.instance;
+  final _firestore = FirebaseFirestore.instance;
   final _formKey = GlobalKey<FormState>();
   String? _email;
   String? _password;
@@ -101,14 +102,17 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
                         'name': _name,
                         'subscribed':false,
                       });
-                      Navigator.pop(context); // Return to previous screen after successful registration
-                    } catch (error) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
+                  }
+                   catch (error) {
                       print(error);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(content: Text('Error registering user.'))
 
-
-                      );
+                     );
                     }
                   }
                 },
@@ -118,7 +122,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
     
                 onPressed: () {
                   // Navigate to login page
-                },
+            },
               ),
             ],
           ),
