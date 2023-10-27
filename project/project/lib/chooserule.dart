@@ -17,8 +17,8 @@ class ChooseRolePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              'assets/images/list.png', // Corrected the path to use forward slashes
-              height: 200, // You can adjust the size as per your requirement
+              'assets/images/list.png', 
+              height: 200, 
               width: 200,
         
             ),

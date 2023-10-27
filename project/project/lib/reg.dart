@@ -1,113 +1,97 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'HomePage.dart';
 
 class UserRegistrationPage extends StatefulWidget {
   @override
   _UserRegistrationPageState createState() => _UserRegistrationPageState();
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 }
 
 class _UserRegistrationPageState extends State<UserRegistrationPage> {
   final _auth = FirebaseAuth.instance;
-  final _formKey = GlobalKey<FormState>();
-  String? _email;
-  String? _password;
-  String? _name;
- final passwordController = TextEditingController();
-  
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String _email = "";
+  String _password = "";
+  String _name = "";
+  String _verifyPassword = "";
+  final TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('User Registration'), backgroundColor:Color.fromARGB(255, 18, 19, 102)),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
+      appBar: AppBar(
+        title: Text("User Registration"),
+        backgroundColor: Color.fromARGB(255, 18, 19, 102), 
+      ),
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
-            children: <Widget>[
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Email'),
-                validator: (value)  {
-                  if (value == null || value.isEmpty || !value.contains('@')) {
-                    return 'Invalid email!';
-                  }
-                  return null;
-                  },
-
-                onSaved: (value) {
-                  _email = value;
-                },
-              ),
+            children: [
               TextFormField(
                 decoration: InputDecoration(labelText: 'Name'),
-                
-                validator: (value)  {
-                  if (value == null) {
-                    return 'Enter name please!';
-                  }
-                  return null;
-                  },
-
-                onSaved: (value) {
-                  _name = value;
-                },
+                validator: (value) => value!.isEmpty ? 'Name cannot be empty' : null,
+                onSaved: (value) => _name = value!,
               ),
               TextFormField(
+                decoration: InputDecoration(labelText: 'Email'),
+                validator: (value) => value!.isEmpty ? 'Email cannot be empty' : null,
+                onSaved: (value) => _email = value!,
+              ),
+              TextFormField(
+                controller: passwordController,
                 decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
+                validator: (value) => value!.length < 6 ? 'Password must be at least 6 characters' : null,
+                onSaved: (value) => _password = value!,
+              ),
+              TextFormField(
+                decoration: InputDecoration(labelText: 'Verify Password'),
                 validator: (value) {
-                if (value == null || value.isEmpty || value.length < 6) {
-               return 'Password must be at least 6 characters!';
-                 }
-                 return null;
-                      },
-
-                onSaved: (value) {
-                  _password = value;
+                  if (value != passwordController.text) {
+                    return 'Passwords do not match';
+                  }
+                  return null;
                 },
+                onSaved: (value) => _verifyPassword = value!,
               ),
-               TextFormField(
-                decoration: InputDecoration(labelText: 'verify password'),
-                obscureText: true,
-                validator: (value) {
-                if (value != passwordController.text) {
-               return 'Passwords must be the same!';
-                 }
-                 return null;
-                      },
-              ),
-
               SizedBox(height: 20),
               ElevatedButton(
                 child: Text('Register'),
-                 style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 18, 19, 102), // This sets the background color
-                         ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 18, 19, 102),
+                ),
                 onPressed: () async {
-                if (_formKey.currentState?.validate() ?? false) {
-                  _formKey.currentState?.save();
-                   try {
-                      // Create the user
+                  if (_formKey.currentState!.validate()) {
+                    _formKey.currentState!.save();
+
+                    try {
                       UserCredential userCredential = await _auth.createUserWithEmailAndPassword(
-                        email: _email!,
-                        password: _password!,
+                        email: _email,
+                        password: _password,
                       );
 
-                      // Save additional user data in Firestore
-                      await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
-                        'email': _email,
-                        'name': _name,
-                        'subscribed':false,
-                      });
-                      Navigator.pop(context); // Return to previous screen after successful registration
+                      if (userCredential.user != null) {
+                        await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
+                          'email': _email,
+                          'name': _name,
+                          'subscribed': false,
+                        });
+
+                        Navigator.of(context).pushReplacement(
+                         MaterialPageRoute(builder: (context) => HomePage()),
+                      );
+
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text('Failed to register user.'))
+                        );
+                      }
                     } catch (error) {
                       print(error);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Error registering user.'))
-
-
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(content: Text('Error: ${error.toString()}'))
                       );
                     }
                   }
@@ -118,7 +102,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
     
                 onPressed: () {
                   // Navigate to login page
-                },
+            },
               ),
             ],
           ),
