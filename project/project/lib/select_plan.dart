@@ -2,29 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'payment_page.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: PlanSelectionPage(),
-    );
-  }
-}
 
 class PlanSelectionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(' '),
+        title: Text('subscription plans'),
+          backgroundColor: Color.fromARGB(255, 18, 19, 102), 
       ),
       body: Container(
         color: Colors.blue[50],
@@ -35,7 +20,7 @@ class PlanSelectionPage extends StatelessWidget {
               Text(
                 'Choose your plan!',
                 style: TextStyle(
-                  color: Colors.blue[900],
+                  color: Color.fromARGB(255, 18, 19, 102),
                   fontSize: 30.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -126,7 +111,7 @@ class PlanCard extends StatelessWidget {
               onPressed: onPressed,
               child: Text('Click'),
               style: ElevatedButton.styleFrom(
-                primary: Colors.blue[900],
+            backgroundColor: Color.fromARGB(255, 18, 19, 102),
               ),
             ),
           ],

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'HomePage.dart';
+
 typedef VoidCallback = void Function();
 
 class PaymentPage extends StatefulWidget {
@@ -31,6 +33,7 @@ class _PaymentPageState extends State<PaymentPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Payment'),
+          backgroundColor: Color.fromARGB(255, 18, 19, 102),
       ),
       body: Container(
         color: Colors.blue[50],
@@ -41,7 +44,7 @@ class _PaymentPageState extends State<PaymentPage> {
               Text(
                 widget.title,
                 style: TextStyle(
-                  color: Colors.blue[900],
+                  color: Color.fromARGB(255, 9, 11, 77),
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
                 ),
@@ -118,17 +121,21 @@ class _PaymentPageState extends State<PaymentPage> {
               SizedBox(height: 20.0),
               ElevatedButton(
                 onPressed: () {
-                  // -----------خطوة الدفع-------------
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: Text('  Done!'),
-                      content: Text(
-                          'Payment completed ${widget.price} by $selectedOption'),
+                      title: Text('Done!'),
+                      content: Text('Payment completed ${widget.price} by $selectedOption'),
                       actions: [
                         TextButton(
                           onPressed: () {
-                            Navigator.pop(context);
+                            Navigator.pop(context); // This closes the dialog
+                            
+                            // Now navigate to the HomePage
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(builder: (context) => HomePage()),
+                            );
                           },
                           child: Text('ok'),
                         ),
@@ -138,9 +145,10 @@ class _PaymentPageState extends State<PaymentPage> {
                 },
                 child: Text('pay'),
                 style: ElevatedButton.styleFrom(
-                  primary: Colors.blue[900],
+                  backgroundColor: Color.fromARGB(255, 18, 19, 102),
                 ),
               ),
+
             ],
           ),
         ),

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'HomePage.dart';
 import 'loginpage.dart';
+import 'select_plan.dart';
 
 class UserRegistrationPage extends StatefulWidget {
   @override
@@ -81,7 +82,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
                         });
 
                         Navigator.of(context).pushReplacement(
-                         MaterialPageRoute(builder: (context) => HomePage()),
+                         MaterialPageRoute(builder: (context) => PlanSelectionPage()),
                       );
 
                       } else {

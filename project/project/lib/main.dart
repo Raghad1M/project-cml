@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:project/chooserule.dart';
@@ -23,10 +24,19 @@ class MyApp extends StatelessWidget {
   }
 }
 _addInitialCourses() async {
+  var coursesCollection = FirebaseFirestore.instance.collection('courses');
+  
   List<String> courseNames = ['Data Structures', 'Machine Learning', 'Web Development'];
   for (var name in courseNames) {
-    Course course = Course(id: DateTime.now().toIso8601String(), name: name);
-    await course.addToFirestore();
+    // Check if course already exists
+    var existingCourses = await coursesCollection.where('name', isEqualTo: name).get();
+    
+    if (existingCourses.docs.isEmpty) {
+      // If the course doesn't exist, add it
+      Course course = Course(id: DateTime.now().toIso8601String(), name: name);
+      await course.addToFirestore();
+    }
   }
 }
+
 

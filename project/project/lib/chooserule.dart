@@ -2,12 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:project/loginpage.dart';
 import 'package:project/reg.dart';
 
+import 'addCourse.dart';
+
 class ChooseRolePage extends StatelessWidget {
   const ChooseRolePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // ignore: unused_local_variable
      Image.asset(
       'assets\image\list.png');;
     return Scaffold(

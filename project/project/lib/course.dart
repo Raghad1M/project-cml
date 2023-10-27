@@ -13,12 +13,16 @@ class Course {
     });
   }
 
-  static Future<List<Course>> fetchAllFromFirestore() async {
+ static Future<List<Course>> fetchAllFromFirestore() async {
+  try {
     var coursesCollection = FirebaseFirestore.instance.collection('courses');
     var courseDocs = await coursesCollection.get();
 
     return courseDocs.docs.map((doc) {
       return Course(id: doc.id, name: doc['name']);
     }).toList();
-  }
+  } catch (e) {
+    print("Error fetching courses: $e");
+    return [];
+  }}
 }

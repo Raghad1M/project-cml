@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
+import 'addCourse.dart';
 
 
 class LoginPageUser extends StatefulWidget {
@@ -10,27 +11,37 @@ class LoginPageUser extends StatefulWidget {
 }
 
 class _LoginPageStateUser extends State<LoginPageUser> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-void _login() async {
-  String email = _usernameController.text;
-  String password = _passwordController.text;
+  bool _isLoading = false;
+  String? _errorMessage;
 
-  try {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+  void _login() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
 
-  } catch (e) {
-   "no account is registered with this email";
+    String email = _emailController.text.trim();
+    String password = _passwordController.text;
+
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
+    } catch (e) {
+      setState(() {
+        _errorMessage = "No account is registered with this email or password is incorrect.";
+        _isLoading = false;
+      });
+    }
   }
-}
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('User Login Page'),
+        backgroundColor: Color.fromARGB(255, 18, 19, 102),
       ),
       body: Center(
         child: Padding(
@@ -39,25 +50,45 @@ void _login() async {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TextField(
-                controller: _usernameController,
-                decoration: InputDecoration(labelText: 'Username'),
+                controller: _emailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  icon: Icon(Icons.email),
+                ),
               ),
+              SizedBox(height: 20),
               TextField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  icon: Icon(Icons.lock),
+                ),
                 obscureText: true,
               ),
               SizedBox(height: 20),
+              _errorMessage != null
+                  ? Text(
+                      _errorMessage!,
+                      style: TextStyle(color: Colors.red),
+                    )
+                  : SizedBox(),
+              SizedBox(height: 20),
               ElevatedButton(
-                onPressed: _login,
-                child: Text('Login'),
+                onPressed: _isLoading ? null : _login,
+                child: _isLoading ? CircularProgressIndicator(color: Colors.white) : Text('Login'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 18, 19, 102),
+                ),
               ),
+              // Optionally add sign-up and password recovery here
             ],
           ),
         ),
       ),
     );
   }
+
+
 }
 
 class LoginPageAdmin extends StatefulWidget {
@@ -66,11 +97,11 @@ class LoginPageAdmin extends StatefulWidget {
 }
 
 class _LoginPageStateAdmin extends State<LoginPageAdmin> {
-  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
       void _login() async {
-        String email = _usernameController.text;
+        String email = _emailController.text;
         String password = _passwordController.text;
 
         try {
@@ -79,14 +110,22 @@ class _LoginPageStateAdmin extends State<LoginPageAdmin> {
           DocumentSnapshot adminDoc = await FirebaseFirestore.instance.collection('admins').doc(userCredential.user!.uid).get();
 
           if (adminDoc.exists) {
-            // User is an admin. Navigate to the admin's main page or show a success message
+             Navigator.push(context, MaterialPageRoute(builder: (context) => AddCoursePage()));
           } else {
-            "no admin with this email";
+            print("No admin with this email"); // Debug print
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('No admin with this email.'))
+            );
           }
         } catch (e) {
-          "log in as a user instead";
+          print("Error logging in: $e"); // Debug print
+          ScaffoldMessenger.of(context).showSnackBar(
+            
+            SnackBar(content: Text('Login failed. Try logging in as a user instead.'))
+          );
         }
       }
+
 
 
   @override
@@ -94,6 +133,7 @@ class _LoginPageStateAdmin extends State<LoginPageAdmin> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Admin Login Page'),
+         backgroundColor: Color.fromARGB(255, 18, 19, 102),
       ),
       body: Center(
         child: Padding(
@@ -102,8 +142,8 @@ class _LoginPageStateAdmin extends State<LoginPageAdmin> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               TextField(
-                controller: _usernameController,
-                decoration: InputDecoration(labelText: 'Asmin Username'),
+                controller: _emailController,
+                decoration: InputDecoration(labelText: 'Admin email'),
               ),
               TextField(
                 controller: _passwordController,
@@ -114,6 +154,9 @@ class _LoginPageStateAdmin extends State<LoginPageAdmin> {
               ElevatedButton(
                 onPressed: _login,
                 child: Text('Login'),
+                 style: ElevatedButton.styleFrom(
+                  backgroundColor: Color.fromARGB(255, 18, 19, 102),
+                ),
               ),
             ],
           ),
