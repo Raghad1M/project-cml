@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
+import 'database_service.dart';
 
 class EnrollmentPage extends StatefulWidget {
   @override
@@ -13,7 +14,12 @@ class _EnrollmentPageState extends State<EnrollmentPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Data Structures'),
-        leading: Icon(Icons.arrow_back),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
          backgroundColor: Color.fromARGB(255, 18, 19, 102), 
       ),
       body: SingleChildScrollView(
@@ -21,7 +27,7 @@ class _EnrollmentPageState extends State<EnrollmentPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Image.asset('assets/images/course-img1.png', fit: BoxFit.cover),
+            Center(child: Image.asset('assets/images/course-img1.png', fit: BoxFit.cover, height: 150,width: 200,), ),
             SizedBox(height: 20),
             Text(
               'Data Structures',
@@ -79,11 +85,15 @@ class _EnrollmentPageState extends State<EnrollmentPage> {
             Center(
               child: ElevatedButton(
                 onPressed: () {
-                  // Handle enrollment logic here
+              //    DatabaseService().enrollUserToCourse('uid', currentCourse.id);
+
                 },
-                child: Text('Enroll Now!'),
-              ),
-            ),
+                 child: Text('Enroll'),
+              style:ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 18, 19, 102), // This sets the background color
+                         )
+              ),),
+            
             SizedBox(height: 10),
             Center(
               child: Column(
