@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'course_Enrollment.dart';
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
@@ -13,7 +13,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> _widgetOptions = [
     NewWidget(),
     Text('Profile Page Content'),
-    Text('Courses Catalog Page Content'),
+    CourseCatalog(),
   ];
 
   void _onItemTapped(int index) {
@@ -87,6 +87,42 @@ class NewWidget extends StatelessWidget {
             // Add similar ListTiles and Images for other courses
           ],
         ),
+      ),
+    );
+  }
+}
+class CourseCatalog extends StatefulWidget {
+  @override
+  _CourseCatalogState createState() => _CourseCatalogState();
+}
+
+class _CourseCatalogState extends State<CourseCatalog> {
+  List<String> courses = ['Web Development', 'Machine Learning'];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Course Catalog'),
+      ),
+      body: ListView.builder(
+        itemCount: courses.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(courses[index]),
+            trailing: ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EnrollmentPage (), // Navigating to the course_Enrollment
+                  ),
+                );
+              },
+              child: Text('Enroll'),
+            ),
+          );
+        },
       ),
     );
   }

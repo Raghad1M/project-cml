@@ -66,7 +66,9 @@ flutter:
   assets:
     - assets/images/course-img2.png
     - assets/images/course-img3.png
-    - images/list.png
+    - assets/images/list.png
+    - assets/images/course-img1.png
+  
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
