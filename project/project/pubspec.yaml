@@ -1,4 +1,4 @@
-name: project
+name: content_management_library
 description: A new Flutter project.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -41,6 +41,7 @@ dependencies:
   cupertino_icons: ^1.0.2
 
 dev_dependencies:
+  flutter_native_splash: 2.3.4 
   flutter_test:
     sdk: flutter
 
@@ -68,9 +69,12 @@ flutter:
     - assets/images/course-img3.png
     - assets/images/list.png
     - assets/images/course-img1.png
-    - assets/default_profile.png
+    - assets/images/default_profile.png
+    - assets/images/iconicon2.png
   
-
+flutter_native_splash:
+  image: assets/images/iconicon2.png  # Path to your splash screen image
+  color: "42a5f5" 
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

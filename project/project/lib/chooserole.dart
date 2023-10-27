@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project/loginpage.dart';
-import 'package:project/reg.dart';
+import 'loginpage.dart';
+import 'reg.dart';
 
 import 'addCourse.dart';
 
