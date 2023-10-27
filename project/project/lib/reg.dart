@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'HomePage.dart';
+import 'loginpage.dart';
 
 class UserRegistrationPage extends StatefulWidget {
   @override
@@ -101,7 +102,10 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
                 child: Text('Already have an account? Login'),
     
                 onPressed: () {
-                  // Navigate to login page
+                   Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPageUser()),
+                  );
             },
               ),
             ],

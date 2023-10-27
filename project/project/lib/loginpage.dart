@@ -1,33 +1,30 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'HomePage.dart';
 
-class LoginApp extends StatelessWidget {
+
+class LoginPageUser extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: LoginPage(),
-    );
-  }
+  _LoginPageStateUser createState() => _LoginPageStateUser();
 }
 
-class LoginPage extends StatefulWidget {
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageStateUser extends State<LoginPageUser> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+void _login() async {
+  String email = _usernameController.text;
+  String password = _passwordController.text;
 
-  void _login() {
-    String username = _usernameController.text;
-    String password = _passwordController.text;
+  try {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePage()));
 
-    // Check the username and password here, and perform the login logic.
-
-    // For a simple example, let's just print the values for now.
-    print("Username: $username");
-    print("Password: $password");
+  } catch (e) {
+   "no account is registered with this email";
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -62,36 +59,35 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-import 'package:flutter/material.dart';
 
-class LoginApp extends StatelessWidget {
+class LoginPageAdmin extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: LoginPage(),
-    );
-  }
+  _LoginPageStateAdmin createState() => _LoginPageStateAdmin();
 }
 
-class LoginPage extends StatefulWidget {
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageStateAdmin extends State<LoginPageAdmin> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  void _login() {
-    String username = _usernameController.text;
-    String password = _passwordController.text;
+      void _login() async {
+        String email = _usernameController.text;
+        String password = _passwordController.text;
 
-    // Check the username and password here, and perform the login logic.
+        try {
+          UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
+          
+          DocumentSnapshot adminDoc = await FirebaseFirestore.instance.collection('admins').doc(userCredential.user!.uid).get();
 
-    // For a simple example, let's just print the values for now.
-    print("Username: $username");
-    print("Password: $password");
-  }
+          if (adminDoc.exists) {
+            // User is an admin. Navigate to the admin's main page or show a success message
+          } else {
+            "no admin with this email";
+          }
+        } catch (e) {
+          "log in as a user instead";
+        }
+      }
+
 
   @override
   Widget build(BuildContext context) {
