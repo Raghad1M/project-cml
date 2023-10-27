@@ -44,42 +44,38 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAq7lb31hbpSkrGOqtiGWPyfcZOOOHqgfU',
-    appId: '1:423418608140:web:c4827cfa411076eaa44c29',
-    messagingSenderId: '423418608140',
-    projectId: 'cml-1-d7ea8',
-    authDomain: 'cml-1-d7ea8.firebaseapp.com',
-    databaseURL: 'https://cml-1-d7ea8-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'cml-1-d7ea8.appspot.com',
-    measurementId: 'G-VXSWC0TMXY',
+    apiKey: 'AIzaSyBGREMf_-5OOiUZGWYDPhydxP8p3sowIiA',
+    appId: '1:72533694684:web:88e7a0806e0f583ffc3c19',
+    messagingSenderId: '72533694684',
+    projectId: 'content-management-library',
+    authDomain: 'content-management-library.firebaseapp.com',
+    storageBucket: 'content-management-library.appspot.com',
+    measurementId: 'G-4B6DW1ZFHT',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB0a8y8PwiuvEOT_tA62qc2PPmfsr1Yy9E',
-    appId: '1:423418608140:android:dde90d750f7dbe63a44c29',
-    messagingSenderId: '423418608140',
-    projectId: 'cml-1-d7ea8',
-    databaseURL: 'https://cml-1-d7ea8-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'cml-1-d7ea8.appspot.com',
+    apiKey: 'AIzaSyD3nG_5bNLAadhGo0IhTq85q8IyCUh1qqs',
+    appId: '1:72533694684:android:b8af2844ba3c258afc3c19',
+    messagingSenderId: '72533694684',
+    projectId: 'content-management-library',
+    storageBucket: 'content-management-library.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBO7eW2jZnqh0nBTfQmjNBVWWEyEEhQ1tM',
-    appId: '1:423418608140:ios:f34b6606c109c5e5a44c29',
-    messagingSenderId: '423418608140',
-    projectId: 'cml-1-d7ea8',
-    databaseURL: 'https://cml-1-d7ea8-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'cml-1-d7ea8.appspot.com',
+    apiKey: 'AIzaSyDIii31Dd9pEHNPUoBsqyTjOVgI_xMXzvg',
+    appId: '1:72533694684:ios:f46e3c32687d7a76fc3c19',
+    messagingSenderId: '72533694684',
+    projectId: 'content-management-library',
+    storageBucket: 'content-management-library.appspot.com',
     iosBundleId: 'com.example.project',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBO7eW2jZnqh0nBTfQmjNBVWWEyEEhQ1tM',
-    appId: '1:423418608140:ios:d6e4dd06a85b9acba44c29',
-    messagingSenderId: '423418608140',
-    projectId: 'cml-1-d7ea8',
-    databaseURL: 'https://cml-1-d7ea8-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'cml-1-d7ea8.appspot.com',
+    apiKey: 'AIzaSyDIii31Dd9pEHNPUoBsqyTjOVgI_xMXzvg',
+    appId: '1:72533694684:ios:6a6835c1e16883bafc3c19',
+    messagingSenderId: '72533694684',
+    projectId: 'content-management-library',
+    storageBucket: 'content-management-library.appspot.com',
     iosBundleId: 'com.example.project.RunnerTests',
   );
 }
