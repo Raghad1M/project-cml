@@ -1,16 +1,24 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'HomePage.dart';
+import 'course.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'database_service.dart';
 
 class EnrollmentPage extends StatefulWidget {
+  final Course course;
+  
+  EnrollmentPage({required this.course});
   @override
   _EnrollmentPageState createState() => _EnrollmentPageState();
+
+
 }
 
 class _EnrollmentPageState extends State<EnrollmentPage> {
-
   @override
   Widget build(BuildContext context) {
+  final user = FirebaseAuth.instance.currentUser;
+  final userId = user?.uid;
     return Scaffold(
       appBar: AppBar(
         title: Text('Data Structures'),
@@ -83,16 +91,24 @@ class _EnrollmentPageState extends State<EnrollmentPage> {
             Text('3- Object oriented programming'),
             SizedBox(height: 30),
             Center(
-              child: ElevatedButton(
-                onPressed: () {
-              //    DatabaseService().enrollUserToCourse('uid', currentCourse.id);
-
-                },
-                 child: Text('Enroll'),
-              style:ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 18, 19, 102), // This sets the background color
-                         )
-              ),),
+              child: Center(
+            child: ElevatedButton(
+              onPressed: () {
+                if (userId != null) {
+                  // Assuming your DatabaseService().enrollUserToCourse function expects userId and courseId as parameters
+                  DatabaseService().enrollUserToCourse(userId, widget.course.id);
+                } else {
+                  // Handle the error if no user is authenticated
+                  print('No user is authenticated');
+                }
+              },
+              child: Text('Enroll'),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 18, 19, 102),
+              ),
+            ),
+          ),
+            ),
             
             SizedBox(height: 10),
             Center(
@@ -108,5 +124,23 @@ class _EnrollmentPageState extends State<EnrollmentPage> {
         ),
       ),
     );
+  }
+}
+
+class Enrollment {
+  final String userId;
+  final String courseId;
+
+  Enrollment({required this.userId, required this.courseId});
+
+  // Function to fetch all enrollments for a given user
+  static Future<List<String>> fetchEnrolledCoursesForUser(String userId) async {
+    var enrollments = await FirebaseFirestore.instance.collection('enrollments')
+                        .where('userId', isEqualTo: userId).get();
+      return enrollments.docs.map<String>((QueryDocumentSnapshot doc) {
+        Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+        return data['courseId'] ?? '';
+      }).toList();
+
   }
 }
