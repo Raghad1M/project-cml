@@ -22,7 +22,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text("User Registration"),
-        backgroundColor: Color.fromARGB(255, 18, 19, 102), // This line changes the AppBar color
+        backgroundColor: Color.fromARGB(255, 18, 19, 102), 
       ),
       body: Form(
         key: _formKey,
