@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:project/loginpage.dart';
 import 'package:project/reg.dart';
 
 class ChooseRolePage extends StatelessWidget {
@@ -17,8 +17,8 @@ class ChooseRolePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Image.asset(
-              'assets/images/list.png', // Corrected the path to use forward slashes
-              height: 200, // You can adjust the size as per your requirement
+              'assets/images/list.png', 
+              height: 200, 
               width: 200,
         
             ),
@@ -26,7 +26,7 @@ class ChooseRolePage extends StatelessWidget {
                       ElevatedButton(
               child: const Text('User'),
                style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 18, 19, 102), // This sets the background color
+                backgroundColor: Color.fromARGB(255, 18, 19, 102), 
                          ),
               onPressed: () {
                 Navigator.push(
@@ -35,14 +35,17 @@ class ChooseRolePage extends StatelessWidget {
                 );
               },
             ),
-             SizedBox(height: 10), // This w
+             SizedBox(height: 10), 
             ElevatedButton(
               child: const Text('Admin'),
                style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 18, 19, 102), // This sets the background color
+                backgroundColor: Color.fromARGB(255, 18, 19, 102), 
                          ),
               onPressed: () {
-                // Navigate to Admin page (you can add this later)
+                 Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => LoginPageAdmin()),
+                  );
               },
             
             ),
