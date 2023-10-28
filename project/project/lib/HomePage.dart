@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'chooserole.dart';
 import 'courseMaterials.dart';
 import 'course_Enrollment.dart';
 import 'course.dart';
@@ -21,6 +22,7 @@ class _HomePageState extends State<HomePage> {
     NewWidget(),
     ProfilePage(),
     CourseCatalog(enrolledCourses: [],),
+    ChooseRolePage(),
   ];
 
   void _onItemTapped(int index) {
@@ -105,6 +107,7 @@ _loadEnrolledCourses() async {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false, 
         title: const Text('My Courses'),  
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 18, 19, 102),
@@ -158,6 +161,7 @@ class _CourseCatalogState extends State<CourseCatalog> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false, 
         title: Text('Course Catalog'),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 18, 19, 102),
@@ -187,7 +191,6 @@ class _CourseCatalogState extends State<CourseCatalog> {
     );
   }
 }
-
 class ProfilePage extends StatefulWidget {
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -196,11 +199,28 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
+  Future<void> _signOut() async {
+    try {
+      await _auth.signOut();
+       Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChooseRolePage(),
+              ),
+            );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error signing out: $e'))
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     User? user = _auth.currentUser;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false, 
         title: Text('Profile Page'),
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 18, 19, 102),
@@ -208,8 +228,12 @@ class _ProfilePageState extends State<ProfilePage> {
           IconButton(
             icon: Icon(Icons.edit),
             onPressed: () {
-              // Navigate to the edit profile page or show a dialog to edit profile info
+              // Navigate to the edit profile page 
             },
+          ),
+          IconButton( 
+            icon: Icon(Icons.logout),
+            onPressed: _signOut,
           )
         ],
       ),
@@ -221,7 +245,6 @@ class _ProfilePageState extends State<ProfilePage> {
             Center(
               child: CircleAvatar(
                 radius: 50,
-
                 backgroundImage: AssetImage('assets/images/default_profile.png'),
               ),
             ),
@@ -231,7 +254,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Text('Email: ${user?.email ?? "Email not available"}'),
             SizedBox(height: 24),
             Text('Achievements', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-            // ... You can list out achievements here ...
+            //  list out achievements here ...
           ],
         ),
       ),

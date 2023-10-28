@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
 import 'addCourse.dart';
+import 'resetPassword.dart';
 
 
 class LoginPageUser extends StatefulWidget {
@@ -80,7 +81,19 @@ class _LoginPageStateUser extends State<LoginPageUser> {
                   backgroundColor: Color.fromARGB(255, 18, 19, 102),
                 ),
               ),
-              // Optionally add sign-up and password recovery here
+                            
+              TextButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => PasswordResetPage()));
+                },
+                child: Text(
+                  'Forgot Password?',
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 18, 19, 102),
+                  ),
+                ),
+              ),
+             
             ],
           ),
         ),

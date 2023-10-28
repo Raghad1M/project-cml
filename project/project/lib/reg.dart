@@ -47,6 +47,7 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
                 decoration: InputDecoration(labelText: 'Password'),
                 validator: (value) => value!.length < 6 ? 'Password must be at least 6 characters' : null,
                 onSaved: (value) => _password = value!,
+                obscureText: true, 
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: 'Verify Password'),
@@ -57,7 +58,9 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
                   return null;
                 },
                 onSaved: (value) => _verifyPassword = value!,
+                obscureText: true, 
               ),
+
               SizedBox(height: 20),
               ElevatedButton(
                 child: Text('Register'),
@@ -75,6 +78,8 @@ class _UserRegistrationPageState extends State<UserRegistrationPage> {
                       );
 
                       if (userCredential.user != null) {
+                        await userCredential.user!.updateProfile(displayName: _name);
+                        await userCredential.user!.reload();
                         await FirebaseFirestore.instance.collection('users').doc(userCredential.user!.uid).set({
                           'email': _email,
                           'name': _name,
